@@ -56,7 +56,6 @@ ScoreRuleStrategy : int
 
 LessThan30Years 
 Between30And40Years
-Over60Years
 LowIncome
 HouseMortgaged
 HasDependents
