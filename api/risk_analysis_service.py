@@ -11,20 +11,24 @@ class RiskProfileStatus(Enum):
     INELIGIBLE = "ineligible"
 
 
+class MaritalStatus(Enum):
+    SINGLE = "single"
+    MARRIED = "married"
+
+
+class OwnershipStatus(Enum):
+    OWNED = "owned"
+    MORTGAGED = "mortgaged"
+
+
 @dataclass
 class HouseStatus:
-    ownership_status: str
+    ownership_status: OwnershipStatus
 
 
 @dataclass
 class VehcleData:
     year: int
-
-
-@dataclass
-class MaritalStatus(Enum):
-    "single"
-    "married"
 
 
 @dataclass
@@ -50,9 +54,9 @@ class InsurenceService:
     def analysis(analysisData):
         return RiskProfilePlan(
             auto=AutoInsurencePofile().evaluate(analysisData),
-            disability=DisabilityInsurencePofile.evaluate(analysisData),
-            home=HomeInsurencePofile.evaluate(analysisData),
-            life=LifeInsurencePofile.evaluate(analysisData),
+            disability=DisabilityInsurencePofile().evaluate(analysisData),
+            home=HomeInsurencePofile().evaluate(analysisData),
+            life=LifeInsurencePofile().evaluate(analysisData),
         )
 
 
@@ -76,28 +80,36 @@ class AutoInsurencePofile(InsurencePofile):
 
 
 class HomeInsurencePofile(InsurencePofile):
-    def evaluate(analysisData):
+    def evaluate(self, analysisData):
+        if self.checkEligibility(analysisData) == False:
+            return RiskProfileStatus.INELIGIBLE
+
         return RiskProfileStatus.ECONOMIC
 
-    def checkEligibility(analysisData):
-        return analysisData.home != null
+    def checkEligibility(self, analysisData):
+        return analysisData.house.ownership_status == OwnershipStatus.OWNED
 
 
 class LifeInsurencePofile(InsurencePofile):
-    def evaluate(analysisData):
+    def evaluate(self, analysisData):
+        if self.checkEligibility(analysisData) == False:
+            return RiskProfileStatus.INELIGIBLE
+
         return RiskProfileStatus.REGULAR
 
-    def checkEligibility(analysisData):
-        has_income = analysisData.income != null and income.income > 0
+    def checkEligibility(self, analysisData):
         is_under_60_years = analysisData.age <= 60
-        return has_income and is_under_60_years
+        return analysisData.age <= 60
 
 
 class DisabilityInsurencePofile(InsurencePofile):
-    def evaluate(analysisData):
-        return RiskProfileStatus.INELIGIBLE
+    def evaluate(self, analysisData):
+        if self.checkEligibility(analysisData) == False:
+            return RiskProfileStatus.INELIGIBLE
 
-    def checkEligibility(analysisData):
-        has_income = analysisData.income != null and income.income > 0
+        return RiskProfileStatus.REGULAR
+
+    def checkEligibility(self, analysisData):
+        has_income = analysisData.income > 0
         is_under_60_years = analysisData.age <= 60
         return has_income and is_under_60_years

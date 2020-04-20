@@ -5,16 +5,17 @@ from api.risk_analysis_service import *
 analysis_data = AnalysisData(
     age=32,
     dependents=2,
-    house={"ownership_status": "owned"},
+    house=HouseStatus(OwnershipStatus.OWNED),
     income=0,
-    marital_status="married",
+    marital_status=MaritalStatus.MARRIED,
     risk_questions=[0, 1, 0],
-    vehicle={"year": 2018},
+    vehicle=VehcleData(year=2018),
 )
 
 
 def test_default_should_return_risk_profile_plan():
     profile = InsurenceService.analysis(analysis_data)
+    print(profile)
     assert profile.auto == RiskProfileStatus.REGULAR
     assert profile.disability == RiskProfileStatus.INELIGIBLE
     assert profile.home == RiskProfileStatus.ECONOMIC
