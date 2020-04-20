@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from abc import ABC, abstractmethod
 
 
 class RiskProfileStatus(Enum):
-    "economic"
-    "regular"
-    "responsible"
-    "ineligible"
+    ECONOMIC = "economic"
+    REGULAR = "regular"
+    RESPONSIBLE = "responsible"
+    INELIGIBLE = "ineligible"
 
 
 @dataclass
@@ -48,5 +49,36 @@ class RiskProfilePlan:
 class InsurenceService:
     def analysis(analysisData):
         return RiskProfilePlan(
-            auto="regular", disability="regular", home="regular", life="regular"
+            auto=AutoInsurencePofile.evaluate(analysisData),
+            disability=DisabilityInsurencePofile.evaluate(analysisData),
+            home=HomeInsurencePofile.evaluate(analysisData),
+            life=LifeInsurencePofile.evaluate(analysisData),
         )
+
+
+class InsurencePofile(ABC):
+    def evaluate(analysisData):
+        pass
+
+    def checkEligibility(analysisData):
+        pass
+
+
+class AutoInsurencePofile(InsurencePofile):
+    def evaluate(analysisData):
+        return RiskProfileStatus.REGULAR
+
+
+class HomeInsurencePofile(InsurencePofile):
+    def evaluate(analysisData):
+        return RiskProfileStatus.ECONOMIC
+
+
+class LifeInsurencePofile(InsurencePofile):
+    def evaluate(analysisData):
+        return RiskProfileStatus.REGULAR
+
+
+class DisabilityInsurencePofile(InsurencePofile):
+    def evaluate(analysisData):
+        return RiskProfileStatus.INELIGIBLE
