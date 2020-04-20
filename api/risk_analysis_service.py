@@ -49,7 +49,7 @@ class RiskProfilePlan:
 class InsurenceService:
     def analysis(analysisData):
         return RiskProfilePlan(
-            auto=AutoInsurencePofile.evaluate(analysisData),
+            auto=AutoInsurencePofile().evaluate(analysisData),
             disability=DisabilityInsurencePofile.evaluate(analysisData),
             home=HomeInsurencePofile.evaluate(analysisData),
             life=LifeInsurencePofile.evaluate(analysisData),
@@ -65,11 +65,14 @@ class InsurencePofile(ABC):
 
 
 class AutoInsurencePofile(InsurencePofile):
-    def evaluate(analysisData):
-        return RiskProfileStatus.REGULAR
+    def checkEligibility(self, analysisData):
+        return analysisData.vehicle is not None
 
-    def checkEligibility(analysisData):
-        return analysisData.vehicle != null
+    def evaluate(self, analysisData):
+        if self.checkEligibility(analysisData) == False:
+            return RiskProfileStatus.INELIGIBLE
+
+        return RiskProfileStatus.REGULAR
 
 
 class HomeInsurencePofile(InsurencePofile):

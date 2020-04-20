@@ -2,15 +2,15 @@ import pytest
 
 from api.risk_analysis_service import *
 
-analysis_data = {
-    "age": 35,
-    "dependents": 2,
-    "house": {"ownership_status": "owned"},
-    "income": 0,
-    "marital_status": "married",
-    "risk_questions": [0, 1, 0],
-    "vehicle": {"year": 2018},
-}
+analysis_data = AnalysisData(
+    age=32,
+    dependents=2,
+    house={"ownership_status": "owned"},
+    income=0,
+    marital_status="married",
+    risk_questions=[0, 1, 0],
+    vehicle={"year": 2018},
+)
 
 
 def test_default_should_return_risk_profile_plan():
