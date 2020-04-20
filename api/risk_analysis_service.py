@@ -68,17 +68,33 @@ class AutoInsurencePofile(InsurencePofile):
     def evaluate(analysisData):
         return RiskProfileStatus.REGULAR
 
+    def checkEligibility(analysisData):
+        return analysisData.vehicle != null
+
 
 class HomeInsurencePofile(InsurencePofile):
     def evaluate(analysisData):
         return RiskProfileStatus.ECONOMIC
+
+    def checkEligibility(analysisData):
+        return analysisData.home != null
 
 
 class LifeInsurencePofile(InsurencePofile):
     def evaluate(analysisData):
         return RiskProfileStatus.REGULAR
 
+    def checkEligibility(analysisData):
+        has_income = analysisData.income != null and income.income > 0
+        is_under_60_years = analysisData.age <= 60
+        return has_income and is_under_60_years
+
 
 class DisabilityInsurencePofile(InsurencePofile):
     def evaluate(analysisData):
         return RiskProfileStatus.INELIGIBLE
+
+    def checkEligibility(analysisData):
+        has_income = analysisData.income != null and income.income > 0
+        is_under_60_years = analysisData.age <= 60
+        return has_income and is_under_60_years
