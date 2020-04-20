@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 from abc import ABC, abstractmethod
+from functools import reduce
 
 
 class RiskProfileStatus(Enum):
@@ -60,6 +61,23 @@ class InsurenceService:
         )
 
 
+class ScoreRuleStrategy(ABC):
+    def calculate(analysisData):
+        pass
+
+
+class LessThan30YearsRuleStrategy(ScoreRuleStrategy):
+    def __init__(self, score):
+        self.__score = score
+
+    def calculate(self, analysisData):
+        print(self.__score)
+        if analysisData.age < 30:
+            return self.__score
+
+        return 0
+
+
 class InsurencePofile(ABC):
     def evaluate(analysisData):
         pass
@@ -69,6 +87,14 @@ class InsurencePofile(ABC):
 
 
 class AutoInsurencePofile(InsurencePofile):
+    def __init__(self):
+        self.__rules = [LessThan30YearsRuleStrategy(5)]
+        self.__score = 0
+
+    def calculate_score(self, analysisData):
+        for rule in self.__rules:
+            self.__score += rule.calculate(analysisData)
+
     def checkEligibility(self, analysisData):
         return analysisData.vehicle is not None
 
@@ -76,7 +102,14 @@ class AutoInsurencePofile(InsurencePofile):
         if self.checkEligibility(analysisData) == False:
             return RiskProfileStatus.INELIGIBLE
 
-        return RiskProfileStatus.REGULAR
+        self.calculate_score(analysisData)
+
+        if self.__score < 0:
+            return RiskProfileStatus.ECONOMIC
+        elif self.__score <= 1 or self.__score >= 2:
+            return RiskProfileStatus.REGULAR
+        else:
+            return RiskProfileStatus.RESPONSIBLE
 
 
 class HomeInsurencePofile(InsurencePofile):

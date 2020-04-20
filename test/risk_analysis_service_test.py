@@ -3,7 +3,7 @@ import pytest
 from api.risk_analysis_service import *
 
 analysis_data = AnalysisData(
-    age=32,
+    age=28,
     dependents=2,
     house=HouseStatus(OwnershipStatus.OWNED),
     income=0,
@@ -15,7 +15,7 @@ analysis_data = AnalysisData(
 
 def test_default_should_return_risk_profile_plan():
     profile = InsurenceService.analysis(analysis_data)
-    print(profile)
+
     assert profile.auto == RiskProfileStatus.REGULAR
     assert profile.disability == RiskProfileStatus.INELIGIBLE
     assert profile.home == RiskProfileStatus.ECONOMIC
