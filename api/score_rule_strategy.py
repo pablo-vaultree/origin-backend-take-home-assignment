@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from api.models import *
+from models import *
 
 
 class ScoreRuleStrategy(ABC):
@@ -45,7 +45,7 @@ class HouseMortgagedRuleStrategy(ScoreRuleStrategy):
         self.__score = score
 
     def calculate(self, analysisData):
-        if analysisData.house.ownership_status == OwnershipStatus.OWNED:
+        if analysisData.house.ownership_status == OwnershipStatus.MORTGAGED:
             return self.__score
 
         return 0

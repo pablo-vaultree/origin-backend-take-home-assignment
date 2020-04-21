@@ -5,21 +5,21 @@ import datetime
 from functools import reduce
 
 
-class RiskProfileStatus(Enum):
-    ECONOMIC = "economic"
-    REGULAR = "regular"
-    RESPONSIBLE = "responsible"
-    INELIGIBLE = "ineligible"
+class RiskProfileStatus(str, Enum):
+    ECONOMIC: str = "economic"
+    REGULAR: str = "regular"
+    RESPONSIBLE: str = "responsible"
+    INELIGIBLE: str = "ineligible"
 
 
-class MaritalStatus(Enum):
-    SINGLE = "single"
-    MARRIED = "married"
+class MaritalStatus(str, Enum):
+    SINGLE: str = "single"
+    MARRIED: str = "married"
 
 
-class OwnershipStatus(Enum):
-    OWNED = "owned"
-    MORTGAGED = "mortgaged"
+class OwnershipStatus(str, Enum):
+    OWNED: str = "owned"
+    MORTGAGED: str = "mortgaged"
 
 
 @dataclass

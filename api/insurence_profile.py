@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from api.models import *
-from api.score_rule_strategy import *
+from models import *
+from score_rule_strategy import *
 
 
 class InsurencePofile(ABC):
@@ -18,6 +18,7 @@ class InsurencePofile(ABC):
         pass
 
     def calculateProfile(self, score):
+        print(str(self) + str(score))
         if score <= 0:
             return RiskProfileStatus.ECONOMIC
         elif score <= 1 or score >= 2:
@@ -64,10 +65,7 @@ class HomeInsurencePofile(InsurencePofile):
         return self.calculateProfile(score)
 
     def checkEligibility(self, analysisData):
-        return (
-            analysisData.house is not None
-            and analysisData.house.ownership_status == OwnershipStatus.OWNED
-        )
+        return analysisData.house is not None        
 
 
 class LifeInsurencePofile(InsurencePofile):

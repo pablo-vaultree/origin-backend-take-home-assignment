@@ -1,5 +1,5 @@
-from api.models import *
-from api.insurence_profile import *
+from models import *
+from insurence_profile import *
 
 
 class InsurenceService:
