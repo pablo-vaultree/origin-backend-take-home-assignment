@@ -21,7 +21,7 @@ class InsurencePofile(ABC):
         print(str(self) + str(score))
         if score <= 0:
             return RiskProfileStatus.ECONOMIC
-        elif score <= 1 or score >= 2:
+        elif score <= 2:
             return RiskProfileStatus.REGULAR
         else:
             return RiskProfileStatus.RESPONSIBLE
@@ -65,7 +65,7 @@ class HomeInsurencePofile(InsurencePofile):
         return self.calculateProfile(score)
 
     def checkEligibility(self, analysisData):
-        return analysisData.house is not None        
+        return analysisData.house is not None
 
 
 class LifeInsurencePofile(InsurencePofile):

@@ -2,3 +2,5 @@ flask
 flask-restplus
 pytest
 dacite
+flask-inputs
+WTForms

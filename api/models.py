@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from flask_inputs import Inputs
+from wtforms.validators import DataRequired, NumberRange
 import datetime
-from functools import reduce
 
 
 class RiskProfileStatus(str, Enum):
@@ -35,6 +36,14 @@ class VehcleData:
         return datetime.date.today().year - self.year
 
 
+class AnalysisDataValidate(Inputs):
+    rule = {
+        "age": [NumberRange(min=0)],
+        "dependents": [NumberRange(min=0)],
+        "house": [NumberRange(min=0)],
+    }
+
+
 @dataclass
 class AnalysisData:
     age: int
@@ -46,7 +55,7 @@ class AnalysisData:
     vehicle: VehcleData
 
     def baseScore(self):
-        return reduce(lambda x, y: x + y, self.risk_questions)
+        return sum(self.risk_questions)
 
 
 @dataclass
