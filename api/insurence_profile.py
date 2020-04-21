@@ -4,21 +4,20 @@ from score_rule_strategy import *
 
 
 class InsurencePofile(ABC):
-    def calculateScore(self, analysisData):
-        score = analysisData.baseScore()
+    def calculate_score(self, analysis_data):
+        score = analysis_data.base_score()
         for rule in self.rules:
-            score += rule.calculate(analysisData)
+            score += rule.calculate(analysis_data)
 
         return score
 
-    def evaluate(self, analysisData):
+    def evaluate(self, analysis_data):
         pass
 
-    def checkEligibility(self, analysisData):
+    def check_eligibility(self, analysis_data):
         pass
 
-    def calculateProfile(self, score):
-        print(str(self) + str(score))
+    def calculate_profile(self, score):
         if score <= 0:
             return RiskProfileStatus.ECONOMIC
         elif score <= 2:
@@ -36,16 +35,16 @@ class AutoInsurencePofile(InsurencePofile):
             LowIncomeRuleStrategy(-1),
         ]
 
-    def checkEligibility(self, analysisData):
-        return analysisData.vehicle is not None
+    def check_eligibility(self, analysis_data):
+        return analysis_data.vehicle is not None
 
-    def evaluate(self, analysisData):
-        if self.checkEligibility(analysisData) == False:
+    def evaluate(self, analysis_data):
+        if self.check_eligibility(analysis_data) == False:
             return RiskProfileStatus.INELIGIBLE
 
-        score = self.calculateScore(analysisData)
+        score = self.calculate_score(analysis_data)
 
-        return self.calculateProfile(score)
+        return self.calculate_profile(score)
 
 
 class HomeInsurencePofile(InsurencePofile):
@@ -57,15 +56,15 @@ class HomeInsurencePofile(InsurencePofile):
             HouseMortgagedRuleStrategy(1),
         ]
 
-    def evaluate(self, analysisData):
-        if self.checkEligibility(analysisData) == False:
+    def evaluate(self, analysis_data):
+        if self.check_eligibility(analysis_data) == False:
             return RiskProfileStatus.INELIGIBLE
 
-        score = self.calculateScore(analysisData)
-        return self.calculateProfile(score)
+        score = self.calculate_score(analysis_data)
+        return self.calculate_profile(score)
 
-    def checkEligibility(self, analysisData):
-        return analysisData.house is not None
+    def check_eligibility(self, analysis_data):
+        return analysis_data.house is not None
 
 
 class LifeInsurencePofile(InsurencePofile):
@@ -78,17 +77,17 @@ class LifeInsurencePofile(InsurencePofile):
             IsMarriedRuleStrategy(1),
         ]
 
-    def evaluate(self, analysisData):
-        if self.checkEligibility(analysisData) == False:
+    def evaluate(self, analysis_data):
+        if self.check_eligibility(analysis_data) == False:
             return RiskProfileStatus.INELIGIBLE
 
-        score = self.calculateScore(analysisData)
+        score = self.calculate_score(analysis_data)
 
-        return self.calculateProfile(score)
+        return self.calculate_profile(score)
 
-    def checkEligibility(self, analysisData):
-        is_under_60_years = analysisData.age <= 60
-        return analysisData.age <= 60
+    def check_eligibility(self, analysis_data):
+        is_under_60_years = analysis_data.age <= 60
+        return analysis_data.age <= 60
 
 
 class DisabilityInsurencePofile(InsurencePofile):
@@ -102,15 +101,15 @@ class DisabilityInsurencePofile(InsurencePofile):
             IsMarriedRuleStrategy(-1),
         ]
 
-    def evaluate(self, analysisData):
-        if self.checkEligibility(analysisData) == False:
+    def evaluate(self, analysis_data):
+        if self.check_eligibility(analysis_data) == False:
             return RiskProfileStatus.INELIGIBLE
 
-        score = self.calculateScore(analysisData)
+        score = self.calculate_score(analysis_data)
 
-        return self.calculateProfile(score)
+        return self.calculate_profile(score)
 
-    def checkEligibility(self, analysisData):
-        has_income = analysisData.income > 0
-        is_under_60_years = analysisData.age <= 60
+    def check_eligibility(self, analysis_data):
+        has_income = analysis_data.income > 0
+        is_under_60_years = analysis_data.age <= 60
         return has_income and is_under_60_years

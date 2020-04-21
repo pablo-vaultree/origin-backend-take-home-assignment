@@ -4,6 +4,7 @@ from functools import wraps
 from dacite import from_dict
 from dacite import Config
 from risk_analysis_service import *
+from typing import List
 from models import *
 import logging
 
@@ -14,6 +15,41 @@ def validate_fields(f):
     wraps(f)
 
     def validate(*args, **kwargs):
+        data = request.get_json()
+
+        error = {}
+        error["message"] = "Field is invalid"
+
+        if "age" not in data or type(data["age"]) is not int:
+            error["field"] = "age"
+            return make_response(jsonify(error), 400)
+
+        if "dependents" not in data or type(data["age"]) is not int:
+            error["field"] = "dependents"
+            return make_response(jsonify(error), 400)
+
+        if "house" not in data:
+            error["field"] = "house"
+            return make_response(jsonify(error), 400)
+
+        if "income" not in data or type(data["age"]) is not int:
+            error["field"] = "income"
+            return make_response(jsonify(error), 400)
+
+        if "marital_status" not in data:
+            error["field"] = "marital_status"
+            return make_response(jsonify(error), 400)
+
+        if "risk_questions" not in data or len(data["risk_questions"]) != 3:
+            error["field"] = "risk_questions"
+            return make_response(jsonify(error), 400)
+
+        if "vehicle" not in data:
+            error["field"] = "vehicle"
+            return make_response(jsonify(error), 400)
+
+        logging.warning(data)
+
         return f(*args, **kwargs)
 
     return validate
@@ -21,7 +57,7 @@ def validate_fields(f):
 
 @app.route("/risk-profile", methods=["POST"])
 @validate_fields
-def riskProfile():
+def risk_profile():
     analysis_data = from_dict(
         data_class=AnalysisData, data=request.get_json(), config=Config(cast=[Enum])
     )

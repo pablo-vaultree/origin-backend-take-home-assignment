@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
-from flask_inputs import Inputs
-from wtforms.validators import DataRequired, NumberRange
 import datetime
 
 
@@ -32,16 +30,8 @@ class HouseStatus:
 class VehcleData:
     year: int
 
-    def yearsOld(self):
+    def years_old(self):
         return datetime.date.today().year - self.year
-
-
-class AnalysisDataValidate(Inputs):
-    rule = {
-        "age": [NumberRange(min=0)],
-        "dependents": [NumberRange(min=0)],
-        "house": [NumberRange(min=0)],
-    }
 
 
 @dataclass
@@ -54,7 +44,7 @@ class AnalysisData:
     risk_questions: List[int]
     vehicle: VehcleData
 
-    def baseScore(self):
+    def base_score(self):
         return sum(self.risk_questions)
 
 

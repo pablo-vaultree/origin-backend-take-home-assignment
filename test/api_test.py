@@ -14,8 +14,9 @@ def client():
     yield client
 
 
-def test_valid_request(client):
-    user = {
+@pytest.fixture
+def analysis_data():
+    analysis_data = {
         "age": 35,
         "dependents": 2,
         "house": {"ownership_status": "owned"},
@@ -25,9 +26,23 @@ def test_valid_request(client):
         "vehicle": {"year": 2018},
     }
 
-    response = client.post("/risk-profile", json=user)
+    yield analysis_data
+
+
+def test_valid_request(client, analysis_data):
+
+    response = client.post("/risk-profile", json=analysis_data)
 
     assert "economic" == response.get_json().get("auto")
     assert "economic" == response.get_json().get("home")
     assert "regular" == response.get_json().get("life")
     assert "ineligible" == response.get_json().get("disability")
+
+
+def test_valid_invalid_request(client, analysis_data):
+
+    analysis_data["age"] = "1"
+    response = client.post("/risk-profile", json=analysis_data)
+
+    assert response.status_code == 400
+    assert "age" == response.get_json().get("field")
