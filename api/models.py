@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from typing import Optional
 import datetime
 
 
@@ -38,11 +39,11 @@ class VehcleData:
 class AnalysisData:
     age: int
     dependents: int
-    house: HouseStatus
+    house: Optional[HouseStatus]
     income: int
     marital_status: MaritalStatus
     risk_questions: List[int]
-    vehicle: VehcleData
+    vehicle: Optional[VehcleData]
 
     def base_score(self):
         return sum(self.risk_questions)

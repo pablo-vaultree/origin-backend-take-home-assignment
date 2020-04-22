@@ -12,7 +12,11 @@ class InsurencePofile(ABC):
         return score
 
     def evaluate(self, analysis_data):
-        pass
+        if self.check_eligibility(analysis_data) == False:
+            return RiskProfileStatus.INELIGIBLE
+
+        score = self.calculate_score(analysis_data)
+        return self.calculate_profile(score)
 
     def check_eligibility(self, analysis_data):
         pass
@@ -38,14 +42,6 @@ class AutoInsurencePofile(InsurencePofile):
     def check_eligibility(self, analysis_data):
         return analysis_data.vehicle is not None
 
-    def evaluate(self, analysis_data):
-        if self.check_eligibility(analysis_data) == False:
-            return RiskProfileStatus.INELIGIBLE
-
-        score = self.calculate_score(analysis_data)
-
-        return self.calculate_profile(score)
-
 
 class HomeInsurencePofile(InsurencePofile):
     def __init__(self):
@@ -55,13 +51,6 @@ class HomeInsurencePofile(InsurencePofile):
             LowIncomeRuleStrategy(-1),
             HouseMortgagedRuleStrategy(1),
         ]
-
-    def evaluate(self, analysis_data):
-        if self.check_eligibility(analysis_data) == False:
-            return RiskProfileStatus.INELIGIBLE
-
-        score = self.calculate_score(analysis_data)
-        return self.calculate_profile(score)
 
     def check_eligibility(self, analysis_data):
         return analysis_data.house is not None
@@ -76,14 +65,6 @@ class LifeInsurencePofile(InsurencePofile):
             HasDependentsRuleStrategy(1),
             IsMarriedRuleStrategy(1),
         ]
-
-    def evaluate(self, analysis_data):
-        if self.check_eligibility(analysis_data) == False:
-            return RiskProfileStatus.INELIGIBLE
-
-        score = self.calculate_score(analysis_data)
-
-        return self.calculate_profile(score)
 
     def check_eligibility(self, analysis_data):
         is_under_60_years = analysis_data.age <= 60
@@ -100,14 +81,6 @@ class DisabilityInsurencePofile(InsurencePofile):
             HasDependentsRuleStrategy(1),
             IsMarriedRuleStrategy(-1),
         ]
-
-    def evaluate(self, analysis_data):
-        if self.check_eligibility(analysis_data) == False:
-            return RiskProfileStatus.INELIGIBLE
-
-        score = self.calculate_score(analysis_data)
-
-        return self.calculate_profile(score)
 
     def check_eligibility(self, analysis_data):
         has_income = analysis_data.income > 0

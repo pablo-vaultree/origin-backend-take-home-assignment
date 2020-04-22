@@ -27,10 +27,6 @@ def validate_fields(f):
             error["field"] = "dependents"
             return make_response(jsonify(error), 400)
 
-        if "house" not in data:
-            error["field"] = "house"
-            return make_response(jsonify(error), 400)
-
         if "income" not in data or type(data["age"]) is not int:
             error["field"] = "income"
             return make_response(jsonify(error), 400)
@@ -41,10 +37,6 @@ def validate_fields(f):
 
         if "risk_questions" not in data or len(data["risk_questions"]) != 3:
             error["field"] = "risk_questions"
-            return make_response(jsonify(error), 400)
-
-        if "vehicle" not in data:
-            error["field"] = "vehicle"
             return make_response(jsonify(error), 400)
 
         return f(*args, **kwargs)
