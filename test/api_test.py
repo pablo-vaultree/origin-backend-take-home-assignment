@@ -39,7 +39,21 @@ def test_valid_request(client, analysis_data):
     assert "ineligible" == response.get_json().get("disability")
 
 
-def test_valid_invalid_request(client, analysis_data):
+def test_user_without_house_request(client, analysis_data):
+    del analysis_data["house"]
+    response = client.post("/risk-profile", json=analysis_data)
+
+    assert "ineligible" == response.get_json().get("home")
+
+
+def test_user_without_vehicle_request(client, analysis_data):
+    del analysis_data["vehicle"]
+    response = client.post("/risk-profile", json=analysis_data)
+
+    assert "ineligible" == response.get_json().get("auto")
+
+
+def test_invalid_request(client, analysis_data):
 
     analysis_data["age"] = "1"
     response = client.post("/risk-profile", json=analysis_data)
