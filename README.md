@@ -74,3 +74,31 @@ You may use any language and framework, provided that you build a solid system w
 This assignment should be doable in less than one day. We expect you to learn fast, **communicate with us**, and make decisions regarding its implementation & scope to achieve the expected results on time.
 
 It is not necessary to build the screens a user would interact with, however, as the API is intended to power a user-facing application, we expect the implementation to be as close as possible to what would be necessary in real-life.
+
+## Solution 
+
+To run the solution with docker:
+
+```BASH
+#run
+docker-compose up -d
+
+#test
+docker-compose run web pytest test
+```
+
+## Solution Explained
+
+For resolving the problem I've brooked the problem in 3 tasks:
+
+- Learn some basic python, linting, frameworks and tooks
+- Understanding problem and domain
+- Map api endpoint
+
+
+## Solution Design
+
+Choosed to resolve the main problem here using strategy pattern, 
+fits with possible future evolution of rules, encapsulating business rules in a sctrucutred pattern, without spaghetti code.
+
+We have concrete InsurenceProfiles witch know how to use ScoreRuleStrategies to apply with the base score an risk profile decision.

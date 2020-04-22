@@ -1,4 +1,3 @@
-#!flask/bin/python
 from flask import Flask, request, jsonify, make_response
 from functools import wraps
 from dacite import from_dict

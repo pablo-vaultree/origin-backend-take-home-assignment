@@ -1,11 +1,7 @@
-FROM python
+FROM python:alpine
 
 COPY . .
 
 RUN pip install -r requirements.txt
 
-WORKDIR /api 
-
-ENTRYPOINT ["python"]
-
-CMD ["app.py", "--host=0.0.0.0"]
+CMD ["python", "api/app.py", "--host=0.0.0.0"]
