@@ -48,8 +48,6 @@ def validate_fields(f):
             error["field"] = "vehicle"
             return make_response(jsonify(error), 400)
 
-        logging.warning(data)
-
         return f(*args, **kwargs)
 
     return validate
@@ -68,4 +66,4 @@ def risk_profile():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0")
