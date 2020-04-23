@@ -87,18 +87,18 @@ docker-compose up -d
 docker-compose run web pytest test
 ```
 
-## Solution Explained
+### Solution Explained
 
 For resolving the problem I've brooked the problem in 3 tasks:
 
-- Learn some basic python, linting, frameworks and tooks
+- Learn some basic python, linting, frameworks and tools
 - Understanding problem and domain
 - Map api endpoint
 
 
-## Solution Design
+### Solution Design
 
 Choosed to resolve the main problem here using strategy pattern, 
 fits with possible future evolution of rules, encapsulating business rules in a sctrucutred pattern, without spaghetti code.
 
-We have concrete InsurenceProfiles witch know how to use ScoreRuleStrategies to apply with the base score an risk profile decision.
+We have concrete InsurenceProfiles which know how to use ScoreRuleStrategies to apply with the base score an risk profile decision.
